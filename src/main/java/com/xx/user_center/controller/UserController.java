@@ -29,6 +29,9 @@ public class UserController {
     @Resource
     private UserService userService;
 
+    /**
+     * 注册接口
+     */
     @PostMapping("/register")
     public Long userRegister(@RequestBody UserRegisterRequest userRegisterRequest) {
         if (userRegisterRequest == null) {
@@ -43,7 +46,9 @@ public class UserController {
         return userService.userRegister(userAccount, userPassword, checkPassword);
     }
 
-
+    /**
+     * 登录接口
+     */
     @PostMapping("/login")
     public User userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) {
         if (userLoginRequest == null) {
@@ -57,6 +62,25 @@ public class UserController {
         return userService.userLogin(userAccount, userPassword, request);
     }
 
+    /**
+     * 返回登录用户信息接口
+     */
+    @GetMapping("/current")
+    public User getCurrentUser(HttpServletRequest request){
+        Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
+        User currentUser = (User)userObj;
+        if (currentUser ==null){
+            return null;
+        }
+        Long currentUserId = currentUser.getId();
+        User user = userService.getById(currentUserId);
+        return userService.getSafetyUser(user);
+
+    }
+
+    /**
+     * 查询接口
+     */
     @GetMapping("/search")
     public List<User> searchUsers(String username, HttpServletRequest request) {
         if (!isAdmin(request)){
@@ -71,6 +95,9 @@ public class UserController {
         return userList.stream().map(user -> userService.getSafetyUser(user)).collect(Collectors.toList());
     }
 
+    /**
+     * 删除接口
+     */
     @PostMapping("/delete")
     public boolean deleteUser(long id, HttpServletRequest request) {
         if (!isAdmin(request)){
