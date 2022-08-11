@@ -36,37 +36,38 @@ class UserServiceTest {
         String userAccount = "ye111";
         String userPassword = "";
         String checkPassword = "12345678";
+        String planetCode = "1";
         //测试是否为空
-        long result = userService.userRegister(userAccount, userPassword, checkPassword);
+        long result = userService.userRegister(userAccount, userPassword, checkPassword,planetCode);
         Assertions.assertEquals(-1,result);
         //测试账户长度是否 不小于 4 位
         userAccount = "ye";
-        result = userService.userRegister(userAccount, userPassword, checkPassword);
+        result = userService.userRegister(userAccount, userPassword, checkPassword,planetCode);
         Assertions.assertEquals(-1,result);
         //测试密码长度是否 不小于 8 位
         userAccount = "ye111";
         userPassword = "1234567";
-        result = userService.userRegister(userAccount, userPassword, checkPassword);
+        result = userService.userRegister(userAccount, userPassword, checkPassword,planetCode);
         Assertions.assertEquals(-1,result);
         //测试账户不能重复
         userAccount = "1234";
         userPassword = "12345678";
-        result = userService.userRegister(userAccount, userPassword, checkPassword);
+        result = userService.userRegister(userAccount, userPassword, checkPassword,planetCode);
         Assertions.assertEquals(-1,result);
         //测试账户不能包含特殊字符
         userAccount = "123 4";
-        result = userService.userRegister(userAccount, userPassword, checkPassword);
+        result = userService.userRegister(userAccount, userPassword, checkPassword,planetCode);
         Assertions.assertEquals(-1,result);
         //测试密码和校验密码是否相同
         userPassword = "12345678";
         checkPassword = "12345679";
-        result = userService.userRegister(userAccount, userPassword, checkPassword);
+        result = userService.userRegister(userAccount, userPassword, checkPassword,planetCode);
         Assertions.assertEquals(-1,result);
         //测试结果正确
         userAccount = "ye111";
         userPassword = "12345678";
         checkPassword = "12345678";
-        result = userService.userRegister(userAccount, userPassword, checkPassword);
+        result = userService.userRegister(userAccount, userPassword, checkPassword,planetCode);
         Assertions.assertTrue(result>0);
     }
 }
